@@ -1,12 +1,14 @@
 from datetime import datetime
 
+TASKS = 'C:/Users/aaron/OneDrive/Desktop/Coding/Python/CLI/CLI_Task_automator/tasks.txt'
+DONE_TASKS = 'C:/Users/aaron/OneDrive/Desktop/Coding/Python/CLI/CLI_Task_automator/done_tasks.txt'
 
 print("Your current list:")
 print()
 
 def read_tasks(list):
-    for task_num in range(1,len(list) + 1):
-        print(str(task_num) + ". " + list[task_num - 1])
+    for task_num in range(0,len(list)):
+        print(str(task_num + 1) + ". " + list[task_num])
     #Prints each task along with its index (the index is incremented by 1 for readability)
 
 def write_task():
@@ -16,10 +18,10 @@ def write_task():
             
     new_task = input("What is the new task?")
         
-    with open('C:/Programing/CLI_task_automator/tasks.txt', 'a') as tasks:
+    with open(TASKS, 'a') as tasks:
         tasks.writelines(new_task + '\n')
         
-    with open('C:/Programing/CLI_task_automator/tasks.txt') as tasks:
+    with open(TASKS) as tasks:
         task_list = []
 
         for task in tasks:
@@ -33,7 +35,7 @@ def write_task():
 def finish_task():
     #Remove a task from both list and tasks file whilst adding it to the created done_tasks file 
     
-    with open('C:/Programing/CLI_task_automator/tasks.txt') as tasks:
+    with open(TASKS) as tasks:
         task_list = []
 
         for task in tasks:
@@ -63,14 +65,14 @@ def finish_task():
 
     current_time = now.strftime("%H:%M:%S")
                 
-    with open('C:/Programing/CLI_task_automator/done_tasks.txt', 'a') as done_tasks:
+    with open(DONE_TASKS, 'a') as done_tasks:
         done_tasks.write(task_list[completed_task - 1] + ' - Completed at:' + current_time + '\n')
         #Creates a text file called done_tasks and adds the completed task to it
                 
     del task_list[completed_task - 1]
     #Deletes the completed task from the list
             
-    with open('C:/Programing/CLI_task_automator/tasks.txt', 'w') as tasks:
+    with open(TASKS, 'w') as tasks:
         for task_num in range(1,len(task_list) + 1):
             tasks.write(task_list[task_num - 1] + '\n')
         #Overwrites tasks.txt leaving only the unfinished tasks
@@ -84,7 +86,7 @@ def finish_task():
 def menu_loop():
     
     while True:
-        with open('C:/Programing/CLI_task_automator/tasks.txt') as tasks:
+        with open(TASKS) as tasks:
             task_list = []
                 
             for task in tasks:
