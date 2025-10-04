@@ -1,26 +1,35 @@
 from datetime import datetime
+import time
 
-TASKS = 'C:/Users/aaron/OneDrive/Desktop/Coding/Python/CLI/CLI_Task_automator/tasks.txt'
-DONE_TASKS = 'C:/Users/aaron/OneDrive/Desktop/Coding/Python/CLI/CLI_Task_automator/done_tasks.txt'
+TASKS = 'CLI_Task_automator/tasks.txt'
+DONE_TASKS = 'CLI_Task_automator/done_tasks.txt'
 
 print("Your current list:")
 print()
 
 def read_tasks(list):
-    for task_num in range(0,len(list)):
-        print(str(task_num + 1) + ". " + list[task_num])
-    #Prints each task along with its index (the index is incremented by 1 for readability)
+
+    if len(list) == 0:
+        print("You have no tasks!")
+    else:
+        for task_num in range(0,len(list)):
+            time.sleep(.25)
+            print(str(task_num + 1) + ". " + list[task_num])
+        #Prints each task along with its index (the index is incremented by 1 for readability)
 
 def write_task():
     #Append new task to tasks file and list
     
     print()
             
-    new_task = input("What is the new task?")
+    new_task = input("What is the new task? ")
+
+    print()
         
     with open(TASKS, 'a') as tasks:
         tasks.writelines(new_task + '\n')
-        
+
+
     with open(TASKS) as tasks:
         task_list = []
 
@@ -66,7 +75,7 @@ def finish_task():
     current_time = now.strftime("%H:%M:%S")
                 
     with open(DONE_TASKS, 'a') as done_tasks:
-        done_tasks.write(task_list[completed_task - 1] + ' - Completed at:' + current_time + '\n')
+        done_tasks.write(task_list[completed_task - 1] + ' - Completed at: ' + current_time + '\n')
         #Creates a text file called done_tasks and adds the completed task to it
                 
     del task_list[completed_task - 1]
@@ -81,7 +90,34 @@ def finish_task():
     print()
     print("Your new list:")
     print()
+
+def read_done_tasks():
+
+    print()
+
+    print("Your completed tasks:")
+
+    print()
+    
+    with open(DONE_TASKS) as done_tasks:
+        done_task_list = []
+                
+        for done_task in done_tasks:
+            done_task_list.append(done_task.strip())
+        #Sorts each task in the done_tasks.txt file into a list  
             
+    if len(done_task_list) == 0:
+        time.sleep(1)
+        print("You haven't completed any tasks yet!")
+        time.sleep(1)
+    else:        
+        for done_task_num in range(0,len(done_task_list)):
+            time.sleep(.25)
+            print(done_task_list[done_task_num])
+        #Prints each completed task along with its index (the index is incremented by 1 for readability)
+        time.sleep(2.5)
+        print()
+
   
 def menu_loop():
     
@@ -97,11 +133,11 @@ def menu_loop():
             
         print()
             
-        read_write = input("Would you like to add a new task (1) , to tick one off (2) or quit (q) ? ")
+        read_write = input("Would you like to (1) add a new task ,(2) to tick one off , (3) see your done tasks or (q) quit ? ")
             
-        while read_write not in ('1','2','q'):
+        while read_write not in ('1','2','3','q'):
             print()
-            print("Invalid input! Please enter a 1 , 2 or q!")
+            print("Invalid input! Please enter a 1 , 2, 3 or q!")
             print()
             read_write = input("Would you like to add a new task (1) , to tick one off (2) or quit (q) ? ")
             print()
@@ -111,7 +147,10 @@ def menu_loop():
             write_task()
         elif read_write == '2':
             finish_task()
+        elif read_write == '3':
+            read_done_tasks()
         else:
+            print()
             print("Thanks for using Task Automator!")
             break
         
